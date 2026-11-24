@@ -409,7 +409,7 @@ export class GitGraphView extends Disposable {
 					command: 'loadCommits',
 					refreshId: msg.refreshId,
 					onlyFollowFirstParent: msg.onlyFollowFirstParent,
-					...await this.dataSource.getCommits(msg.repo, msg.branches, msg.maxCommits, msg.showTags, msg.showRemoteBranches, msg.includeCommitsMentionedByReflogs, msg.onlyFollowFirstParent, msg.commitOrdering, msg.remotes, msg.hideRemotes, msg.stashes)
+					...await this.dataSource.getCommits(msg.repo, msg.branches, msg.maxCommits, msg.showTags, msg.showRemoteBranches, msg.includeCommitsMentionedByReflogs, msg.onlyFollowFirstParent, msg.commitOrdering, msg.remotes, msg.hideRemotes, msg.stashes, typeof msg.filter === 'string' ? msg.filter : '')
 				});
 				break;
 			case 'loadConfig':
@@ -720,6 +720,7 @@ export class GitGraphView extends Disposable {
 				<div id="controls">
 					<span id="repoControl"><span class="unselectable">Repo: </span><div id="repoDropdown" class="dropdown"></div></span>
 					<span id="branchControl"><span class="unselectable">Branches: </span><div id="branchDropdown" class="dropdown"></div></span>
+					<span id="filterControl"><label for="filterInput" class="unselectable">Filter: </label><input type="text" id="filterInput" spellcheck="false" placeholder="fix bug  @author:jane  @date:2024-01-01.." title="Filter the commits: keywords (regular expressions, matched case insensitively) that must all be found in the commit message; @author:<pattern> matches the author name or email; @date:<date> shows the commits made on or after that date, and @date:<from>..<to> shows a date range (either side can be omitted). Dates are matched against the date the commit was created (the Git commit date), and support any format understood by Git (e.g. 2024-01-01). Use double quotes for values containing spaces. Press Enter to apply, Escape to revert."></span>
 					<label id="showRemoteBranchesControl"><input type="checkbox" id="showRemoteBranchesCheckbox" tabindex="-1"><span class="customCheckbox"></span>Show Remote Branches</label>
 					<div id="findBtn" title="Find"></div>
 					<div id="terminalBtn" title="Open a Terminal for this Repository"></div>

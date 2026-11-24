@@ -12,6 +12,7 @@ class GitGraphView {
 	private onlyFollowFirstParent: boolean = false;
 	private avatars: AvatarImageCollection = {};
 	private currentBranches: string[] | null = null;
+	private filter: string = '';
 
 	private currentRepo!: string;
 	private currentRepoLoading: boolean = true;
@@ -51,6 +52,7 @@ class GitGraphView {
 	private readonly tableElem: HTMLElement;
 	private readonly footerElem: HTMLElement;
 	private readonly showRemoteBranchesElem: HTMLInputElement;
+	private readonly filterElem: HTMLInputElement;
 	private readonly refreshBtnElem: HTMLElement;
 	private readonly scrollShadowElem: HTMLElement;
 
@@ -74,6 +76,23 @@ class GitGraphView {
 		this.tableElem = document.getElementById('commitTable')!;
 		this.footerElem = document.getElementById('footer')!;
 		this.scrollShadowElem = <HTMLInputElement>document.getElementById('scrollShadow')!;
+
+		this.filterElem = <HTMLInputElement>document.getElementById('filterInput')!;
+		this.renderFilter();
+		this.filterElem.addEventListener('change', () => this.applyFilter());
+		this.filterElem.addEventListener('keydown', (e) => {
+			if (e.isComposing) return;
+			if (e.keyCode ? e.keyCode === 13 : e.key === 'Enter') {
+				// Use keyCode === 13 to detect 'Enter' events if available (for compatibility with IME Keyboards used by Chinese / Japanese / Korean users)
+				this.applyFilter();
+				this.viewElem.focus();
+				handledEvent(e);
+			} else if (e.key === 'Escape') {
+				this.filterElem.value = this.filter;
+				this.viewElem.focus();
+				handledEvent(e);
+			}
+		});
 
 		viewElem.focus();
 
@@ -122,6 +141,10 @@ class GitGraphView {
 			this.currentRepo = prevState.currentRepo;
 			this.currentBranches = prevState.currentBranches;
 			this.maxCommits = prevState.maxCommits;
+			if (typeof prevState.filter === 'string') {
+				this.filter = prevState.filter;
+				this.renderFilter();
+			}
 			this.expandedCommit = prevState.expandedCommit;
 			this.avatars = prevState.avatars;
 			this.gitConfig = prevState.gitConfig;
@@ -587,6 +610,28 @@ class GitGraphView {
 		this.requestLoadRepoInfoAndCommits(hard, false, configChanges);
 	}
 
+	/**
+	 * Apply the Commit Filter currently entered in the controls, and reload the commits if it has changed.
+	 */
+	private applyFilter() {
+		const filter = this.filterElem.value.trim();
+		this.filterElem.value = filter;
+		if (filter === this.filter) return;
+		this.filter = filter;
+		this.renderFilter();
+		this.maxCommits = this.config.initialLoadCommits;
+		this.clearCommits();
+		this.requestLoadRepoInfoAndCommits(true, true);
+	}
+
+	/**
+	 * Render the Commit Filter input, so that it reflects the filter that is currently applied.
+	 */
+	private renderFilter() {
+		this.filterElem.value = this.filter;
+		alterClass(this.filterElem, CLASS_ACTIVE, this.filter !== '');
+	}
+
 
 	/* Requests */
 
@@ -617,7 +662,8 @@ class GitGraphView {
 			commitOrdering: getCommitOrdering(repoState.commitOrdering),
 			remotes: this.gitRemotes,
 			hideRemotes: repoState.hideRemotes,
-			stashes: this.gitStashes
+			stashes: this.gitStashes,
+			filter: this.filter
 		});
 	}
 
@@ -722,6 +768,7 @@ class GitGraphView {
 			commitHead: this.commitHead,
 			avatars: this.avatars,
 			currentBranches: this.currentBranches,
+			filter: this.filter,
 			moreCommitsAvailable: this.moreCommitsAvailable,
 			maxCommits: this.maxCommits,
 			onlyFollowFirstParent: this.onlyFollowFirstParent,
@@ -2024,6 +2071,7 @@ class GitGraphView {
 
 	private observeKeyboardEvents() {
 		document.addEventListener('keydown', (e) => {
+			if (e.target === this.filterElem) return;
 			if (contextMenu.isOpen()) {
 				if (e.key === 'Escape') {
 					contextMenu.close();
