@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.30.1 - 2026-11-24
+* New "Filter" input on the Git Graph View, that filters the commits by:
+    * Keywords: all of the keywords must be found in the commit message.
+    * `@author:<pattern>`: the author name or email must match the pattern.
+    * `@date:<date>` / `@date:<from>..<to>`: the commits made in the specified date (or date range). Either side of a range can be omitted, and a date without a time covers the whole day.
+* The Webview build now declares the ambient types it uses, so that it compiles with the type definitions shipped by modern dependency trees.
+
 ## 1.30.0 - 2021-04-05
 * #395 Added a "Force Fetch" option onto the "Fetch into Local Branch" Dialog, allowing any local branch (that's not checked out) to be reset to the remote branch. This dialog is accessed via the Remote Branch Context Menu.
 * #457 New "View Diff with Working File" action on the File Context Menu in the Commit Details View.

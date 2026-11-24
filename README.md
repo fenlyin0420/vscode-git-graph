@@ -1,5 +1,25 @@
 # Git Graph extension for Visual Studio Code
 
+> **Fork note**: this is a fork of [mhutchie/vscode-git-graph](https://github.com/mhutchie/vscode-git-graph) (v1.30.0), published as `fenlyin.git-graph-fenlyin`. It adds a **commit filter** to the Git Graph View — all credit for Git Graph goes to Michael Hutchison.
+
+## Commit Filter
+
+A `Filter` box is available in the Git Graph View's control bar, that filters the commits of the open repository (the value is remembered by the view).
+
+| Enter | Filters the commits by |
+| --- | --- |
+| `fix` | A keyword in the commit message. |
+| `fix bug` | All of the keywords — every keyword must be found in the commit message. |
+| `@author:jane` | The author name or email (a regular expression, matched case insensitively). |
+| `@author:"Jane Doe"` | The same, for values containing spaces (wrap the value in double quotes). |
+| `@date:2024-01-01` | The commits made on or after this date. |
+| `@date:2024-01-01..2024-06-30` | The commits made in this date range (`@date:..2024-06-30` and `@date:2024-01-01..` are also supported). |
+| `fix @author:jane @date:2024` | Any combination of the above (the dimensions are combined). |
+
+Press `Enter` (or leave the box) to apply the filter, and `Escape` to revert the edit. Clearing the box shows the commits of all authors, on all dates.
+
+Notes: keywords and author patterns are regular expressions; dates are matched against the date the commit was created (the Git commit date), and a date without a time covers the whole day. The filter is applied by `git log`, so commits that are filtered out aren't loaded at all.
+
 View a Git Graph of your repository, and easily perform Git actions from the graph. Configurable to look the way you want!
 
 ![Recording of Git Graph](https://github.com/mhutchie/vscode-git-graph/raw/master/resources/demo.gif)
