@@ -28,7 +28,7 @@
 	},
 	"qna": "https://github.com/fenlyin0420/vscode-git-graph/issues",
 	"license": "SEE LICENSE IN 'LICENSE'",
-	"icon": "resources/icon.png",
+	"icon": "resources/icon-fenlyin.png",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
