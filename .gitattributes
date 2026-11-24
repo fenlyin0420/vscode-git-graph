@@ -1,0 +1,4 @@
+# The ESLint 'linebreak-style' rule requires CRLF in the TypeScript sources, so these files are
+# stored in the repository with LF (the default) and checked out with CRLF on every platform.
+src/commitFilter.ts text eol=crlf
+tests/commitFilter.test.ts text eol=crlf
