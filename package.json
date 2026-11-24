@@ -18,15 +18,15 @@
 	"categories": [
 		"Other"
 	],
-	"homepage": "https://github.com/mhutchie/vscode-git-graph",
+	"homepage": "https://github.com/fenlyin0420/vscode-git-graph",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/mhutchie/vscode-git-graph.git"
+		"url": "https://github.com/fenlyin0420/vscode-git-graph.git"
 	},
 	"bugs": {
-		"url": "https://github.com/mhutchie/vscode-git-graph/issues"
+		"url": "https://github.com/fenlyin0420/vscode-git-graph/issues"
 	},
-	"qna": "https://github.com/mhutchie/vscode-git-graph/wiki/Support-Resources",
+	"qna": "https://github.com/fenlyin0420/vscode-git-graph/issues",
 	"license": "SEE LICENSE IN 'LICENSE'",
 	"icon": "resources/icon.png",
 	"engines": {
